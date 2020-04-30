@@ -1,31 +1,76 @@
-const products = [
-  {id: 1, title: 'Notebook', price: 200},
-  {id: 1, title: 'Notebook', price: 20000},
-  {id: 2, title: 'Mouse', price: 1500},
-  {id: 3, title: 'Keyboard', price: 5000},
-  {id: 4, title: 'Gamepad', price: 4500},
-];
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
-const renderProduct = (title, price) => {
-  return `<div class="product-item">
-              <h3>${title}</h3>
-              <p>${price}</p>
-              <button class="buy-btn">Добавить в корзину</button>
-          </div>`;
-};
-renderProduct = (title = "No product", price = 0) => `<div class="product-item">
-                                      <h3>${title}</h3>
-                                      <p>${price}</p>
-                                      <button class="buy-btn">Добавить в корзину</button>
-                                  </div>`;
-// значения параметров функции по умолчанию: для названия товара - No product, для цены - 0 
-// стрелочную функцию можно сократить убрав фигурные скобки и команду return
+// // Переделал на Promises 
 
-const renderProducts = list => {
-  const productList = list.map(item => renderProduct(item.title, item.price));
-  const productList = list.map(item => renderProduct(item.title, item.price)).join('');
-//метод .map добавляет запятую, можно убрать с помощью .join('')
-  document.querySelector('.products').innerHTML = productList;
-};
+// let getRequest = (url) => {
+//   return Promise ((resolve, reject) => {
+//     let xhr = new XMLHttpRequest();
+//     xhr.open('GET', url, true);
+//     xhr.onreadystatechange = () => {
+//       if (xhr.readyState === 4) {
+//         if (xhr.status !== 200) {
+//           reject('Error');
+//         } else {
+//           resolve(xhr.responseText);
+//         }
+//       }
+//     };
+//     xhr.send();
+//   });
+// };
 
-renderProducts(products);
+class ProductList {
+    constructor(container = '.products') {
+      this.container = container;
+      this.goods = [];
+      this.allProducts = [];
+      this._getProducts()
+          .then((data) => {
+              this.goods = [...data];
+              this.render();
+          });
+    }
+    
+    _getProducts() {
+      return fetch(`${API}/catalogData.json`)
+          .then(result => result.json())
+          .catch(error => {
+            console.log('Error!', error);
+          });
+    }
+  
+    calcSum(){
+      return this.allProducts.reduce((accum, item) => accum += item.price, 0);
+    }
+  
+    render() {
+      const block = document.querySelector(this.container);
+      for (let product of this.goods) {
+        const productObject = new ProductItem(product);
+        this.allProducts.push(productObject);
+        block.insertAdjacentHTML('beforeend', productObject.render());
+      }
+    }
+  }
+  
+  class ProductItem {
+    constructor(product, img='https://placehold.it/200x150') {
+      this.title = product.product_name;//из-за того что name было другим, показывало undefined
+      this.price = product.price;
+      this.id = product.id;
+      this.img = img;
+    }
+  
+    render() {
+      return `<div class="product-item" data-id="${this.id}">
+                  <img src="${this.img}" alt="Some img">
+                  <div class="desc">
+                      <h3>${this.title}</h3>
+                      <p>${this.price} \u20bd</p>
+                      <button class="buy-btn">Купить</button>
+                  </div>
+              </div>`;
+    }
+  }
+  
+  new ProductList();
