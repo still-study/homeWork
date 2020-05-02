@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regular Expressions</title>
+</head>
+<body>
+    <ul id="text" style="list-style-type: none;">
+        <li>One: 'Hi Mary.'</li>
+        <li>Two: 'Oh, hi.'</li>
+        <li>One: 'How are you doing?'</li>
+        <li>Two: 'I'm doing alright. How about you?'</li>
+        <li>One: 'Not too bad. The weather is great isn't it?'</li>
+        <li>Two: 'Yes. It's absolutely beautiful today.'</li>
+        <li>One: 'I wish it was like this more frequently.'</li>
+        <li>Two: 'Me too.'</li>
+        <li>One: 'So where are you going now?'</li>
+        <li>Two: 'I'm going to meet a friend of mine at the department store'</li>
+        <li>One: 'Going to do a little shopping?'</li>
+        <li>Two: 'Yeah, I have to buy some presents for my parents.'</li>
+        <li>One: 'What's the occasion?'</li>
+        <li>Two: 'It's their anniversary.'</li>
+        <li>One: 'That's great. Well, you better get going. You don't want to be late.'</li>
+        <li>Two: 'I'll see you next time.'</li>
+        <li>One: 'Sure.' Bye.</li>
+    </ul>
+    
+
+    <script>
+
+        const text = document.getElementById('text').innerText;
+        console.log(text.replace(/'/g, '"'));  // первое задание
+        console.log(text.replace(/\B'|'\B/g, '"'));  // второе задание
+        
+    </script>
+</body>
+</html>
