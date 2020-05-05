@@ -6,7 +6,8 @@ const app = new Vue({
         catalogUrl: '/catalogData.json',
         products: [],
         imgCatalog: 'https://placehold.it/200x150',
-        searchLine: ''
+        searchLine: '',
+        isVisibleCart: false
     },
     methods: {
         getJson(url){
@@ -18,6 +19,9 @@ const app = new Vue({
         },
         addProduct(product){
             console.log(product.id_product);
+        },
+        FilterGoods(){
+            console.log(this.searchLine);
         }
     },
     mounted(){
