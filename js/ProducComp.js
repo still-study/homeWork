@@ -1,3 +1,29 @@
+Vue.component('search-form', {
+    data(){
+        return{
+            userSearch: '',
+        }
+    },
+    template:  `<div>
+                    <form action="#" class="search-form" @submit.prevent="filter">
+                        <input type="text" class="search-field" v-model="userSearch">
+                        <user-search :userSearch="userSearch"></user-search>
+                    </form>
+                </div>`
+});
+
+Vue.component('user-search', {
+    props: ['userSearch'],
+    data(){
+        return{
+            productsAPI: this.$root.$refs.products,
+        }
+    },
+    template: `<button class="btn-search" @click="productsAPI.filter(userSearch)" type="submit">
+                   <i class="fas fa-search"></i>
+               </button>`,
+})
+
 Vue.component('products', {
     data(){
         return {
