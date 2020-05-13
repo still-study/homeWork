@@ -8,10 +8,12 @@ const change = (cart, req) => {
   return JSON.stringify(cart, null, 4);
 };
 const del = (cart, req) => {
-
+  cart.contents.remove(req.body);
+  return JSON.stringify(cart, null, 4);
 };
 
 module.exports = {
   add,
   change,
+  del,
 };
